@@ -1,6 +1,7 @@
-import { Button, Checkbox, IconButton } from '@mui/material';
+import { Autocomplete, Button, Checkbox, FormControlLabel, IconButton, Radio, RadioGroup, TextField } from '@mui/material';
 import { Delete,Edit, KeyboardArrowLeft, KeyboardArrowRight, KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight} from '@mui/icons-material';
 import { useEffect,useState } from 'react';
+import { Dropdown } from 'rsuite';
 
 function App() {
   const [data, setData] = useState([]);
@@ -29,6 +30,21 @@ function App() {
   //or  setData(prevData => {
   // return prevData.filter((_, i) => i !== (page - 1) * 10 + index)
   //});
+
+  const handleDeleteSelected = () => {
+    const newData = [...data];
+  
+    for (let i = (page - 1) * 10; i <= Math.min(page * 10 - 1, newData.length - 1); i++) {
+      if (newData[i].isChecked === true) {
+        newData.splice(i, 1);
+        i--; 
+      }
+    }
+    console.log(newData)
+  
+    setData(newData);
+  };
+  
  
   
 
@@ -60,11 +76,28 @@ function App() {
    return (
     <div className="Pagination w-screen h-screen py-[5vh] px-[5vw] flex flex-col gap-y-[5vh]">
       <div className="search-deleteBulk flex justify-between items-center">
-        <div className="search flex gap-x-3">
-          <input type="text" className="w-[300px] outline-none sm:text-[20px]" placeholder="Search..."/>
+         <div className="search_searchtype flex gap-x-3">
+           <div className="search flex items-center">
+           <input type="text" className="w-[300px] outline-none sm:text-[20px] py-[4px] px-[10px]" placeholder="Search..."/>
           <Button variant="contained" className="search-icon" sx={{backgroundColor:"#ff584f",color:"white"}}>Search</Button>
+           </div>
+           <div className="searchtype">
+           <Dropdown title="Search By:">
+               
+               <RadioGroup
+    aria-labelledby="demo-radio-buttons-group-label"
+    defaultValue="female"
+    name="radio-buttons-group"
+  >
+    <FormControlLabel value="female" control={<Radio />} label="Female" />
+    <FormControlLabel value="male" control={<Radio />} label="Male" />
+    <FormControlLabel value="other" control={<Radio />} label="Other" />
+  </RadioGroup>
+    
+  </Dropdown>
+           </div>
         </div>
-        <IconButton sx={{backgroundColor:"#ff584f",color:"white"}}>
+        <IconButton sx={{backgroundColor:"#ff584f",color:"white"}} onClick={handleDeleteSelected}>
           <Delete/>
         </IconButton>  
       </div>
