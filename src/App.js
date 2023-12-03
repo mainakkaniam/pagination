@@ -222,7 +222,7 @@ function App() {
        </div>
        <div className="last-line flex justify-between items-center text-xl">
          <div className="selected">
-           0 out of {getFilteredData().length} items selected
+         {`${getFilteredData().filter(item => item.isChecked).length} out of ${getFilteredData().length} items selected`}
          </div>
          <div className="page-change flex gap-x-2 justify-center items-center">
            <div className="page-number text-xl">
