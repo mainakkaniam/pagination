@@ -48,11 +48,13 @@ function App() {
  
   
 
-  const handlePropertyChange = (e, index, property) => {
+  const handlePropertyChange = (e, id, property) => {
     const newData = [...data];
-    newData[page * 10 - 10 + index][property] = e.target.value;
-    setData(newData);
-  }
+    const index = newData.findIndex(item => item.id === id);
+    newData[index][property] = e.target.value;
+    setData(newData); 
+  };
+  
 
   const handleCheckbox = (e, id) => {
     const { name, checked } = e.target;
@@ -188,17 +190,17 @@ function App() {
                      <td><input type="text" value={item.name}
                        className="border-none bg-transparent outline-none w-fit text-center"
                        onChange={(e) => {
-                       handlePropertyChange(e, index, "name");
+                       handlePropertyChange(e, item.id, "name");
                      }}/></td>
                      <td><input type="text" value={item.email}
                        className="border-none bg-transparent outline-none w-fit text-center"
                        onChange={(e) => {
-                       handlePropertyChange(e, index, "email");
+                       handlePropertyChange(e, item.id, "email");
                      }}/></td>
                      <td><input type="text" value={item.role}
                        className="border-none bg-transparent outline-none w-fit text-center"
                        onChange={(e) => {
-                       handlePropertyChange(e,index,"role")
+                       handlePropertyChange(e,item.id,"role")
                      }}/></td>
                      <td>
                        <div className="flex w-full justify-evenly">
