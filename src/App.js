@@ -143,7 +143,8 @@ function App() {
            onClick={handleDeleteSelected}>
           <Delete/>
         </IconButton>  
-      </div>
+       </div>
+       <p className="text-xl text-[#ff584f]">This project has inline editing enabled</p>
        <div className="table sm:text-[20px]">
        <table>
       <thead>
