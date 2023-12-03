@@ -88,11 +88,11 @@ function App() {
   };
 
    return (
-    <div className="Pagination w-screen h-screen py-[5vh] px-[5vw] flex flex-col gap-y-[5vh]">
+    <div className="Pagination w-screen min-h-screen py-[5vh] px-[5vw] flex flex-col gap-y-[5vh]">
       <div className="search-deleteBulk flex justify-between items-center">
          <div className="search_searchtype flex gap-x-3">
            <div className="search flex items-center">
-             <input type="text" className="w-[300px] outline-none text-[20px] py-[4px] px-[10px]" placeholder={`Search By ${searchBy}`}
+             <input type="text" className="w-[300px] outline-none text-[20px] py-[4px] px-[10px]" placeholder={`Search by ${searchBy}`}
                onChange={(e) => {
                  if (e.target.value.length > 0)
                    setPage(1);
@@ -126,7 +126,7 @@ function App() {
                </style>
                <RadioGroup
     aria-labelledby="demo-radio-buttons-group-label"
-    defaultValue="female"
+    defaultValue="name"
                  name="radio-buttons-group"
                  onChange={(e)=>{setSearchBy(e.target.value)}}
   >
@@ -138,7 +138,9 @@ function App() {
   </Dropdown>
            </div>
         </div>
-        <IconButton sx={{backgroundColor:"#ff584f",color:"white"}} onClick={handleDeleteSelected}>
+         <IconButton sx={{ backgroundColor: "#ff584f", color: "white" }}
+           disabled={!getFilteredData().slice((page - 1) * 10, Math.min(page * 10, getFilteredData().length)).some((item) => item?.isChecked === true)}
+           onClick={handleDeleteSelected}>
           <Delete/>
         </IconButton>  
       </div>
@@ -215,42 +217,65 @@ function App() {
       </tbody>
     </table>
        </div>
-       <div className="last-line flex justify-between items-center">
+       <div className="last-line flex justify-between items-center text-xl">
          <div className="selected">
            0 out of {getFilteredData().length} items selected
          </div>
          <div className="page-change flex gap-x-2 justify-center items-center">
-           <div className="page-number">
-             page {page} selected
+           <div className="page-number text-xl">
+             Page {page} selected
            </div>
            <div className="page-change-icons flex gap-x-2">
-             <IconButton sx={{ backgroundColor: "#ff584f", color: "white" }} onClick={() => {
+             <IconButton
+               className="hover:text-black"
+               sx={{ backgroundColor: "#ff584f", color: "white" }}
+               disabled={page===1}
+               onClick={() => {
                handleSelectedPage(1);
            }}>
           <KeyboardDoubleArrowLeft/>
              </IconButton>  
-             <IconButton sx={{ backgroundColor: "#ff584f", color: "white" }}
+             <IconButton
+               className="hover:text-black"
+               sx={{ backgroundColor: "#ff584f", color: "white" }}
                disabled={page===1}
                onClick={() => {
                handleSelectedPage(page-1)
              }}>
           <KeyboardArrowLeft/>
-             </IconButton>  
+             </IconButton> 
              {
                [...Array(Math.ceil(getFilteredData().length/10))].map((_, index) => (
-                 <Button sx={{ backgroundColor: "#ff584f", color: "white", paddingX: "3px", minWidth: "40px" }} onClick={() => {
+                 <Button
+                   className={page === (index + 1) ? "" : "hover:text-black"}
+                   sx={{
+                     backgroundColor: page === (index + 1) ? "white" : "#ff584f",
+                     color: page === (index + 1) ? "#ff584f" : "white",
+                     paddingX: "3px",
+                     minWidth: "40px",
+                     border: page === (index + 1) ? " 1px solid #ff584f" : "none"
+                   }} onClick={() => {
                    handleSelectedPage(index + 1);
                 }}>
                 {index+1}
                 </Button> 
                ))
              } 
-             <IconButton sx={{ backgroundColor: "#ff584f", color: "white" }} onClick={() => {
+             <IconButton
+               className="hover:text-black"
+               sx={{ backgroundColor: "#ff584f", color: "white" }}
+               disabled={page===Math.ceil(getFilteredData().length/10)}
+               onClick={() => {
                handleSelectedPage(page + 1);
              }}>
           <KeyboardArrowRight/>
              </IconButton>  
-             <IconButton sx={{ backgroundColor: "#ff584f", color: "white" }}
+             <IconButton
+             className="hover:text-black"
+               sx={{
+               backgroundColor: "#ff584f",
+               color: "white",
+             }}
                disabled={page===Math.ceil(getFilteredData().length/10)}
                onClick={() => {
                handleSelectedPage(Math.ceil(getFilteredData().length/10));
